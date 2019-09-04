@@ -3,7 +3,6 @@ import React, { PropTypes } from "react";
 class PdfDoc extends React.Component {
   render() {
     const { article } = this.props;
-    debugger;
     return (
       <div>
         <div className="container">
