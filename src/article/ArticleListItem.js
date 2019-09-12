@@ -1,4 +1,4 @@
-import React, { PropTypes } from "react";
+import React from "react";
 import * as Markdown from "react-markdown";
 
 class ArticleListItem extends React.Component {
@@ -29,6 +29,7 @@ class ArticleListItem extends React.Component {
                   article.fields &&
                   article.fields.image.fields.file.url + "?w=800&h=800"
                 }
+                alt="blablabla"
               />
             </div>
           </div>

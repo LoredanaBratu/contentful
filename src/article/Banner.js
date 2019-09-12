@@ -1,4 +1,4 @@
-import React, { PropTypes } from "react";
+import React from "react";
 
 class Banner extends React.Component {
   render() {
@@ -11,6 +11,7 @@ class Banner extends React.Component {
             article.fields &&
             article.fields.image.fields.file.url + "?w=200&h=200"
           }
+          alt="img-banner"
         />
         <hr />
       </div>

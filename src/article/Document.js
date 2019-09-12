@@ -1,4 +1,4 @@
-import React, { PropTypes } from "react";
+import React from "react";
 
 class Document extends React.Component {
   render() {
@@ -7,6 +7,7 @@ class Document extends React.Component {
       <div className="document col-md-3">
         <img
           src={article.banner.fields.image.fields.file.url + "?w=200&h=200"}
+          alt="pic"
         />
         <div className="title">{article.banner.fields.title}</div>
       </div>

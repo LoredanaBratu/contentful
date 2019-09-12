@@ -1,4 +1,4 @@
-import React, { PropTypes } from "react";
+import React from "react";
 
 class PdfCard extends React.Component {
   render() {
@@ -12,6 +12,7 @@ class PdfCard extends React.Component {
               <div className="document  col-md-3" style={{ marginTop: "15px" }}>
                 <img
                   src={article.fields.photos.fields.file.url + "?w=200&h=200"}
+                  alt="card-pdf"
                 />
 
                 <div className="title">{article.fields.title}</div>
