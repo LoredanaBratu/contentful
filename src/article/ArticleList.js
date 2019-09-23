@@ -6,10 +6,6 @@ import PdfCard from "./PdfCard";
 import PdfDoc from "./PdfDoc";
 
 import client from "../service/client";
-// const accessToken =
-//   "eaca30191e4f4ed79797ac3cf3b855c4ee3a7e03ee4c4dc763871a837dbfe7da4";
-// const spaceId = "y4h3skws4gkc";
-// const query = ``;
 
 class ArticleList extends React.Component {
   state = { articles: [] };
@@ -36,6 +32,7 @@ class ArticleList extends React.Component {
     //, locale: 'en-US'
     client.getEntries({ content_type: "fastStart" }).then(response => {
       response.items.forEach(entry => {
+        console.log(response.items);
         if (entry.fields) {
           this.setState(state => {
             const articles = [...state.articles, entry.fields];
