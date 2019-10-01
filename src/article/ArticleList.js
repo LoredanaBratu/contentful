@@ -10,40 +10,49 @@ import client from "../service/client";
 class ArticleList extends React.Component {
   state = { articles: [] };
 
-  componentDidMount() {
-    // fetch(
-    //   `https://graphql.contentful.com/content/v1/spaces/${spaceId}/environments/master`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "content-type": "application/json",
-    //       authorization: `Bearer ${accessToken}`
-    //     },
-    //     body: JSON.stringify({
-    //       query
-    //     })
-    //   }
-    // )
-    //   .then(res => res.json())
-    //   .then(response => {
-    //     console.log(" resp", response);
-    //   });
+  async componentDidMount() {
+    try {
+      // fetch(
+      //   `https://graphql.contentful.com/content/v1/spaces/${spaceId}/environments/master`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "content-type": "application/json",
+      //       authorization: `Bearer ${accessToken}`
+      //     },
+      //     body: JSON.stringify({
+      //       query
+      //     })
+      //   }
+      // )
+      //   .then(res => res.json())
+      //   .then(response => {
+      //     console.log(" resp", response);
+      //   });
 
-    //, locale: 'en-US'
-    client.getEntries({ content_type: "fastStart" }).then(response => {
+      //, locale: 'en-US']
+      const response = await client.getEntries({
+        content_type: "fastStart"
+      });
+
       response.items.forEach(entry => {
         console.log(response.items);
         if (entry.fields) {
           this.setState(state => {
             const articles = [...state.articles, entry.fields];
+            localStorage.setItem("articles", JSON.stringify(articles));
+            console.log("articles", articles);
+
             return {
               articles
             };
           });
         }
       });
-    });
-
+    } catch (err) {
+      const articles = JSON.parse(localStorage.getItem("articles") || []);
+      this.setState({ articles });
+    }
     // client.getEntries({content_type: 'post', locale: 'en-US'}).then((response) => {
     //     response.items.forEach(entry => {
     //         if(entry.fields) {
@@ -72,6 +81,7 @@ class ArticleList extends React.Component {
 
     return (
       <div>
+        <p>test</p>
         {(articles || []).map((article, i) => (
           <React.Fragment>
             {article.banner && <Banner key={i} article={article.banner} />}
