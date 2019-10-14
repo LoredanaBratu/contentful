@@ -1,4 +1,5 @@
 import React from "react";
+import { useIndexedDB } from "react-indexed-db";
 import ArticleListItem from "./ArticleListItem";
 import Banner from "./Banner";
 import Document from "./Document";
@@ -12,6 +13,12 @@ class ArticleList extends React.Component {
 
   async componentDidMount() {
     try {
+      const response = await client.getEntries({
+        content_type: "fastStart"
+      });
+
+      const { add, getByIndex, update } = useIndexedDB("article");
+
       // fetch(
       //   `https://graphql.contentful.com/content/v1/spaces/${spaceId}/environments/master`,
       //   {
@@ -31,16 +38,23 @@ class ArticleList extends React.Component {
       //   });
 
       //, locale: 'en-US']
-      const response = await client.getEntries({
-        content_type: "fastStart"
-      });
-
-      response.items.forEach(entry => {
-        console.log(response.items);
+      console.log(response.items);
+      response.items.forEach(async entry => {
         if (entry.fields) {
+          console.log(entry);
+          const entryInDB = await getByIndex("id", entry.sys.id);
+          console.log("ENTRY ", entryInDB);
+
+          if (!entryInDB) {
+            await add({ ...entry, id: entry.sys.id });
+          } else {
+            await update({ ...entry, id: entry.sys.id });
+          }
+
           this.setState(state => {
             const articles = [...state.articles, entry.fields];
-            localStorage.setItem("articles", JSON.stringify(articles));
+            // await add({})
+            // localStorage.setItem("articles", JSON.stringify(articles));
             console.log("articles", articles);
 
             return {
@@ -50,8 +64,20 @@ class ArticleList extends React.Component {
         }
       });
     } catch (err) {
-      const articles = JSON.parse(localStorage.getItem("articles") || []);
-      this.setState({ articles });
+      const { getAll } = useIndexedDB("article");
+      const data = await getAll();
+      data.forEach(({ fields }) => {
+        this.setState(state => {
+          const articles = [...state.articles, fields];
+          // await add({})
+          // localStorage.setItem("articles", JSON.stringify(articles));
+          console.log("articles", articles);
+
+          return {
+            articles
+          };
+        });
+      });
     }
     // client.getEntries({content_type: 'post', locale: 'en-US'}).then((response) => {
     //     response.items.forEach(entry => {
@@ -78,7 +104,10 @@ class ArticleList extends React.Component {
 
   render() {
     const { articles } = this.state;
-
+    const { getAll } = useIndexedDB("article");
+    getAll().then(data => {
+      console.log("DATAAA", data);
+    });
     return (
       <div>
         <p>test</p>

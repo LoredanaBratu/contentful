@@ -4,6 +4,10 @@ import ArticleList from "./article/ArticleList";
 import Graphql from "./graphql/Graphql";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import BlogContentful from "./blog/BlogContentful";
+import { DBConfig } from "./service/db";
+import { initDB } from "react-indexed-db";
+
+initDB(DBConfig);
 
 function App() {
   // return <ArticleList />;
